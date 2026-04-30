@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Justice Connect — Lawyer-Client Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== ROOT ===== */
+:root {
+  --teal: #00ACC1;
+  --teal-d: #007B8A;
+  --teal-l: #E0F7FA;
+  --navy: #0D1F3C;
+  --navy2: #1A3358;
+  --gold: #F5A623;
+  --white: #FFFFFF;
+  --bg: #F0F4F8;
+  --bg2: #E8EEF5;
+  --text: #0D1F3C;
+  --muted: #607080;
+  --border: #D6E0EC;
+  --success: #16A34A;
+  --danger: #DC2626;
+  --r: 14px;
+  --shadow: 0 2px 16px rgba(13,31,60,0.08);
+  --shadow-hover: 0 8px 32px rgba(0,172,193,0.18);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* ===== PAGE SYSTEM ===== */
+.page { display:none; }
+.page.active { display:block; }
+
+/* ===== NAV ===== */
+.navbar {
+  background:var(--navy);
+  padding:0 60px;
+  display:flex; align-items:center; justify-content:space-between;
+  height:68px; position:sticky; top:0; z-index:50;
+  box-shadow:0 2px 20px rgba(0,0,0,0.2);
+}
+.nav-logo {
+  font-family:'Playfair Display',serif;
+  font-size:1.35rem; font-weight:700; color:#fff;
+  display:flex; align-items:center; gap:10px; cursor:pointer;
+}
+.nav-logo span { font-size:1.6rem; }
+.nav-center { display:flex; gap:6px; }
+.nav-tab {
+  padding:8px 18px; border-radius:50px;
+  color:rgba(255,255,255,0.65);
+  font-size:0.88rem; font-weight:500; cursor:pointer;
+  border:none; background:transparent;
+  font-family:'Outfit',sans-serif;
+  transition:all .2s; display:flex; align-items:center; gap:6px;
+}
+.nav-tab.active, .nav-tab:hover {
+  background:rgba(0,172,193,0.18); color:#fff;
+}
+.nav-tab.active { color:var(--teal); }
+.nav-right { display:flex; align-items:center; gap:12px; }
+.nav-user {
+  display:flex; align-items:center; gap:8px;
+  color:rgba(255,255,255,0.85); font-size:0.88rem;
+}
+.nav-avatar {
+  width:36px; height:36px; border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),var(--navy2));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem; color:#fff; font-weight:700;
+}
+.btn-logout {
+  padding:7px 16px; border-radius:50px;
+  border:1.5px solid rgba(255,255,255,0.25);
+  background:transparent; color:rgba(255,255,255,0.7);
+  font-size:0.82rem; cursor:pointer;
+  font-family:'Outfit',sans-serif; transition:all .2s;
+}
+.btn-logout:hover { border-color:#fff; color:#fff; }
+
+/* ===== LANDING ===== */
+#landing { min-height:100vh; background:linear-gradient(135deg,#071628 0%,#0D1F3C 55%,#0A2A45 100%); }
+.land-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:20px 80px;
+}
+.land-logo { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:#fff; display:flex; align-items:center; gap:8px; }
+.land-nav-btns { display:flex; gap:10px; }
+.btn-ghost { padding:9px 22px; border:1.5px solid rgba(255,255,255,0.3); border-radius:50px; background:transparent; color:#fff; font-size:0.9rem; cursor:pointer; font-family:'Outfit',sans-serif; transition:all .2s; }
+.btn-ghost:hover { border-color:#fff; background:rgba(255,255,255,0.06); }
+.btn-teal { padding:9px 22px; border:none; border-radius:50px; background:var(--teal); color:#fff; font-size:0.9rem; cursor:pointer; font-family:'Outfit',sans-serif; font-weight:600; transition:all .2s; }
+.btn-teal:hover { background:var(--teal-d); transform:translateY(-1px); }
+
+.hero-section {
+  display:grid; grid-template-columns:1fr 1fr;
+  align-items:center; gap:60px;
+  padding:70px 80px 60px;
+}
+.hero-left {}
+.hero-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(0,172,193,0.15); border:1px solid rgba(0,172,193,0.3);
+  color:#4DD0E1; padding:5px 14px; border-radius:50px;
+  font-size:0.78rem; font-weight:600; letter-spacing:.05em; margin-bottom:22px;
+}
+.hero-left h1 {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.4rem,4vw,3.6rem); font-weight:900;
+  color:#fff; line-height:1.13; margin-bottom:20px;
+}
+.hero-left h1 em { color:var(--teal); font-style:normal; }
+.hero-left p { color:rgba(255,255,255,0.65); font-size:1.05rem; line-height:1.75; max-width:480px; margin-bottom:36px; }
+.hero-btns { display:flex; gap:14px; }
+.btn-hero-p { padding:15px 34px; border:none; border-radius:50px; background:var(--teal); color:#fff; font-size:1rem; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif; box-shadow:0 6px 24px rgba(0,172,193,0.4); transition:all .25s; }
+.btn-hero-p:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,172,193,0.5); }
+.btn-hero-o { padding:15px 34px; border:2px solid rgba(255,255,255,0.4); border-radius:50px; background:transparent; color:#fff; font-size:1rem; font-weight:500; cursor:pointer; font-family:'Outfit',sans-serif; transition:all .25s; }
+.btn-hero-o:hover { border-color:#fff; background:rgba(255,255,255,0.07); }
+
+.hero-right {
+  display:flex; flex-direction:column; gap:14px;
+}
+.feature-card {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px; padding:20px 22px;
+  display:flex; align-items:flex-start; gap:14px;
+  backdrop-filter:blur(12px);
+  transition:all .25s; cursor:default;
+}
+.feature-card:hover { background:rgba(0,172,193,0.1); border-color:rgba(0,172,193,0.3); transform:translateX(4px); }
+.fc-icon { font-size:1.8rem; flex-shrink:0; }
+.fc-title { color:#fff; font-weight:700; font-size:0.95rem; margin-bottom:4px; }
+.fc-desc { color:rgba(255,255,255,0.5); font-size:0.82rem; line-height:1.55; }
+
+.hero-stats {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:24px; padding:0 80px 70px;
+}
+.hs-card {
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);
+  border-radius:14px; padding:24px; text-align:center;
+}
+.hs-num { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; color:var(--teal); }
+.hs-label { color:rgba(255,255,255,0.5); font-size:0.82rem; margin-top:4px; }
+
+/* ===== AUTH ===== */
+.auth-page {
+  min-height:100vh;
+  background:linear-gradient(135deg,#071628,#0D1F3C);
+  display:flex; align-items:center; justify-content:center;
+  padding:40px 20px;
+}
+.auth-box {
+  background:#fff; border-radius:22px;
+  padding:42px 44px; width:100%; max-width:600px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+}
+.auth-logo-sm { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--navy); text-align:center; margin-bottom:6px; }
+.auth-box h2 { font-family:'Playfair Display',serif; font-size:1.8rem; text-align:center; margin-bottom:24px; }
+.role-toggle { display:flex; background:var(--bg); border-radius:50px; padding:4px; margin-bottom:24px; }
+.rtab { flex:1; padding:10px; border:none; border-radius:50px; cursor:pointer; font-family:'Outfit',sans-serif; font-size:0.9rem; font-weight:500; background:transparent; color:var(--muted); transition:all .2s; }
+.rtab.active { background:var(--navy); color:#fff; box-shadow:0 3px 10px rgba(13,31,60,0.3); }
+.frow { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.fg { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.fg label { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text); }
+.fg input, .fg select, .fg textarea {
+  padding:11px 14px; border:1.5px solid var(--border); border-radius:10px;
+  font-family:'Outfit',sans-serif; font-size:0.92rem; color:var(--text);
+  outline:none; transition:border .2s; resize:vertical;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--teal); }
+.btn-submit {
+  width:100%; padding:14px; background:var(--navy); color:#fff;
+  border:none; border-radius:12px; font-size:1rem; font-weight:700;
+  cursor:pointer; font-family:'Outfit',sans-serif; margin-top:4px; transition:all .2s;
+}
+.btn-submit:hover { background:var(--navy2); transform:translateY(-1px); }
+.switch-link { text-align:center; margin-top:14px; font-size:0.88rem; color:var(--muted); }
+.switch-link a { color:var(--teal); font-weight:600; cursor:pointer; }
+.demo-row { display:flex; gap:8px; justify-content:center; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+.demo-btn { padding:7px 18px; border:1.5px solid var(--teal); background:transparent; color:var(--teal); border-radius:50px; cursor:pointer; font-size:0.82rem; font-family:'Outfit',sans-serif; transition:all .2s; }
+.demo-btn:hover { background:var(--teal); color:#fff; }
+
+/* ===== CLIENT DASHBOARD ===== */
+#client-dash { min-height:100vh; background:var(--bg); }
+.dash-body { display:grid; grid-template-columns:280px 1fr; min-height:calc(100vh - 68px); }
+
+/* Sidebar */
+.sidebar {
+  background:var(--navy);
+  padding:28px 0;
+  display:flex; flex-direction:column; gap:4px;
+  position:sticky; top:68px; height:calc(100vh - 68px);
+  overflow-y:auto;
+}
+.sidebar-label {
+  font-size:0.68rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:rgba(255,255,255,0.3);
+  padding:16px 24px 6px;
+}
+.sidebar-item {
+  display:flex; align-items:center; gap:12px;
+  padding:11px 24px; cursor:pointer;
+  color:rgba(255,255,255,0.6); font-size:0.9rem; font-weight:500;
+  border-left:3px solid transparent;
+  transition:all .2s;
+}
+.sidebar-item span { font-size:1.15rem; }
+.sidebar-item:hover { background:rgba(255,255,255,0.06); color:#fff; }
+.sidebar-item.active { background:rgba(0,172,193,0.15); color:var(--teal); border-left-color:var(--teal); }
+
+/* Main content area */
+.main-content { padding:32px 40px; }
+.page-title { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; margin-bottom:6px; color:var(--navy); }
+.page-subtitle { color:var(--muted); font-size:0.88rem; margin-bottom:28px; }
+
+/* Search section */
+.search-panel {
+  background:#fff; border-radius:var(--r);
+  padding:24px; margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+.search-row1 {
+  display:grid; grid-template-columns:1fr 1fr 2fr auto;
+  gap:12px; align-items:end;
+}
+.location-sel {
+  padding:11px 14px; border:1.5px solid var(--border); border-radius:10px;
+  font-family:'Outfit',sans-serif; font-size:0.9rem; color:var(--text);
+  outline:none; background:var(--bg);
+}
+.location-sel:focus { border-color:var(--teal); }
+.search-input-wrap { position:relative; }
+.search-input-wrap input {
+  width:100%; padding:11px 16px; border:1.5px solid var(--border); border-radius:10px;
+  font-family:'Outfit',sans-serif; font-size:0.9rem; outline:none; background:#fff;
+}
+.search-input-wrap input:focus { border-color:var(--teal); }
+.search-btn {
+  padding:11px 28px; background:var(--teal); color:#fff;
+  border:none; border-radius:10px; font-weight:700; font-size:0.9rem;
+  cursor:pointer; font-family:'Outfit',sans-serif; white-space:nowrap;
+  transition:all .2s;
+}
+.search-btn:hover { background:var(--teal-d); }
+
+.chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+.chip {
+  padding:6px 16px; border-radius:50px;
+  border:1.5px solid var(--border); font-size:0.8rem;
+  font-weight:600; cursor:pointer; background:#fff;
+  color:var(--muted); transition:all .2s;
+}
+.chip.active, .chip:hover { background:var(--teal); border-color:var(--teal); color:#fff; }
+
+/* Lawyer grid */
+.lawyer-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
+  gap:16px;
+}
+.lcard {
+  background:#fff; border-radius:var(--r); padding:20px;
+  box-shadow:var(--shadow); cursor:pointer; transition:all .25s;
+  border:1.5px solid transparent;
+}
+.lcard:hover { border-color:var(--teal); box-shadow:var(--shadow-hover); transform:translateY(-2px); }
+.lcard-top { display:flex; gap:14px; align-items:flex-start; margin-bottom:14px; }
+.lcard-avatar {
+  width:54px; height:54px; border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),var(--navy));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; color:#fff; flex-shrink:0;
+}
+.lcard-name { font-family:'Playfair Display',serif; font-size:0.97rem; font-weight:700; margin-bottom:3px; }
+.lcard-spec { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); }
+.lcard-sub { font-size:0.78rem; color:var(--muted); margin-top:3px; }
+.lcard-rating { font-size:0.85rem; font-weight:700; color:var(--gold); margin-left:auto; }
+.lcard-footer {
+  display:flex; align-items:center; justify-content:space-between;
+  padding-top:14px; border-top:1px solid var(--border);
+}
+.lcard-fee { font-size:0.88rem; font-weight:700; }
+.lcard-fee span { color:var(--muted); font-weight:400; }
+.btn-book {
+  padding:8px 20px; background:var(--teal); color:#fff;
+  border:none; border-radius:8px; font-size:0.82rem;
+  font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif; transition:all .2s;
+}
+.btn-book:hover { background:var(--teal-d); }
+
+/* Cases */
+.cases-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
+  gap:16px;
+}
+.case-card {
+  background:#fff; border-radius:var(--r);
+  padding:20px; box-shadow:var(--shadow);
+}
+.case-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+.case-title { font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:700; }
+.badge-t {
+  padding:3px 12px; border-radius:50px;
+  font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+}
+.t-criminal { background:#FEE2E2; color:#B91C1C; }
+.t-civil { background:#DBEAFE; color:#1D4ED8; }
+.t-family { background:#FCE7F3; color:#BE185D; }
+.t-property { background:#D1FAE5; color:#065F46; }
+.t-consumer { background:#FEF3C7; color:#92400E; }
+.t-labour { background:#EDE9FE; color:#5B21B6; }
+.case-meta { font-size:0.82rem; color:var(--muted); line-height:1.8; }
+.case-meta strong { color:var(--text); }
+.next-badge {
+  display:inline-block; margin-top:8px;
+  background:var(--teal-l); color:var(--teal-d);
+  padding:4px 12px; border-radius:50px;
+  font-size:0.75rem; font-weight:700;
+}
+
+/* Dates */
+.dates-grid { display:flex; flex-direction:column; gap:12px; }
+.date-card {
+  background:#fff; border-radius:var(--r);
+  padding:18px 22px; box-shadow:var(--shadow);
+  display:flex; align-items:center; gap:18px;
+}
+.date-cal {
+  width:58px; height:58px; border-radius:12px;
+  background:var(--teal); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; flex-shrink:0;
+}
+.date-cal .day { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:#fff; line-height:1; }
+.date-cal .mon { font-size:0.65rem; color:rgba(255,255,255,0.8); font-weight:600; text-transform:uppercase; }
+.date-info h4 { font-weight:700; font-size:0.92rem; margin-bottom:4px; }
+.date-info p { font-size:0.8rem; color:var(--muted); }
+.date-tag {
+  margin-left:auto; padding:5px 14px;
+  border-radius:50px; font-size:0.72rem; font-weight:700;
+}
+.tag-court { background:#EDE9FE; color:#5B21B6; }
+.tag-meeting { background:var(--teal-l); color:var(--teal-d); }
+
+/* Profile */
+.profile-layout { display:grid; grid-template-columns:300px 1fr; gap:24px; }
+.profile-card {
+  background:#fff; border-radius:var(--r);
+  padding:28px; box-shadow:var(--shadow); text-align:center;
+}
+.profile-av-big {
+  width:90px; height:90px; border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),var(--navy));
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.5rem; color:#fff; margin:0 auto 14px;
+}
+.profile-name { font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:700; }
+.profile-role { font-size:0.78rem; font-weight:700; text-transform:uppercase; color:var(--teal); margin-top:4px; }
+.profile-details { background:#fff; border-radius:var(--r); padding:24px; box-shadow:var(--shadow); }
+.detail-row { display:flex; padding:11px 0; border-bottom:1px solid var(--border); }
+.detail-row:last-child { border-bottom:none; }
+.detail-label { width:160px; font-size:0.82rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+.detail-val { font-size:0.88rem; font-weight:600; color:var(--text); }
+
+/* ===== LAWYER DASH ===== */
+#lawyer-dash { min-height:100vh; background:var(--bg); }
+.lw-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+.lw-stat {
+  background:#fff; border-radius:var(--r); padding:22px 20px;
+  box-shadow:var(--shadow); display:flex; align-items:center; gap:14px;
+}
+.lw-stat-icon {
+  width:48px; height:48px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0;
+}
+.icon-teal { background:var(--teal-l); }
+.icon-navy { background:#E8EDF7; }
+.icon-gold { background:#FEF3C7; }
+.icon-green { background:#D1FAE5; }
+.lw-stat-val { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:var(--navy); }
+.lw-stat-label { font-size:0.78rem; color:var(--muted); }
+
+/* Meeting cards */
+.meeting-card {
+  background:#fff; border-radius:var(--r); padding:20px;
+  box-shadow:var(--shadow); display:grid;
+  grid-template-columns:1fr auto; gap:12px;
+}
+.meet-name { font-weight:700; font-size:0.92rem; margin-bottom:4px; }
+.meet-meta { font-size:0.8rem; color:var(--muted); line-height:1.7; }
+.meet-status { padding:4px 12px; border-radius:50px; font-size:0.72rem; font-weight:700; height:fit-content; }
+.ms-pending { background:#FEF3C7; color:#92400E; }
+.ms-confirmed { background:#D1FAE5; color:#065F46; }
+.meet-actions { display:flex; gap:8px; margin-top:12px; grid-column:1/-1; }
+.btn-confirm { padding:7px 16px; background:var(--success); color:#fff; border:none; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; }
+.btn-decline { padding:7px 16px; background:#FEE2E2; color:var(--danger); border:1px solid #FECACA; border-radius:8px; font-size:0.8rem; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; }
+
+/* Section header */
+.sec-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.sec-header h3 { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; }
+.btn-add { padding:8px 18px; background:var(--teal); color:#fff; border:none; border-radius:8px; font-size:0.82rem; font-weight:700; cursor:pointer; font-family:'Outfit',sans-serif; transition:all .2s; }
+.btn-add:hover { background:var(--teal-d); }
+
+/* ===== MODAL ===== */
+.modal-backdrop {
+  position:fixed; inset:0; background:rgba(0,0,0,0.5);
+  z-index:200; display:none; align-items:center; justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-backdrop.open { display:flex; }
+.modal-box {
+  background:#fff; border-radius:20px;
+  padding:32px; width:100%; max-width:560px;
+  max-height:90vh; overflow-y:auto;
+  animation:mIn .28s ease;
+}
+.modal-box.wide { max-width:660px; }
+@keyframes mIn { from{transform:scale(.94);opacity:0} to{transform:scale(1);opacity:1} }
+.modal-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+.modal-head h3 { font-family:'Playfair Display',serif; font-size:1.25rem; }
+.m-close { background:var(--bg); border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; }
+.modal-lw-header { display:flex; gap:14px; align-items:center; padding:16px; background:var(--bg); border-radius:12px; margin-bottom:18px; }
+.modal-lw-av { width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,var(--teal),var(--navy)); display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:#fff; flex-shrink:0; }
+.modal-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.mi-item { background:var(--bg); border-radius:10px; padding:12px 14px; }
+.mi-item label { display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:3px; }
+.mi-item span { font-size:0.88rem; font-weight:700; }
+.modal-bio { background:var(--bg); border-radius:10px; padding:14px; font-size:0.85rem; color:var(--muted); line-height:1.65; margin-bottom:18px; }
+
+/* ===== TOAST ===== */
+.toast { position:fixed; bottom:28px; right:28px; background:var(--navy); color:#fff; padding:13px 24px; border-radius:50px; font-size:0.88rem; font-weight:500; z-index:999; opacity:0; transform:translateY(20px); transition:all .3s; box-shadow:0 6px 24px rgba(0,0,0,0.25); }
+.toast.show { opacity:1; transform:translateY(0); }
+
+/* empty state */
+.empty { text-align:center; padding:60px 20px; color:var(--muted); }
+.empty .ei { font-size:3.5rem; margin-bottom:14px; }
+.empty p { font-size:0.9rem; }
+
+/* content tabs inside main */
+.ctab { display:none; }
+.ctab.active { display:block; }
+</style>
+</head>
+<body>
+
+<!-- ===== LANDING ===== -->
+<div id="landing" class="page active">
+  <div class="land-nav">
+    <div class="land-logo"><span>⚖</span> JusticeConnect</div>
+    <div class="land-nav-btns">
+      <button class="btn-ghost" onclick="showPage('login-page')">Login</button>
+      <button class="btn-teal" onclick="showPage('register-page')">Get Started</button>
+    </div>
+  </div>
+
+  <div class="hero-section">
+    <div class="hero-left">
+      <div class="hero-badge">⚖ Trusted Legal Platform · India</div>
+      <h1>Find the Right Lawyer,<br><em>Resolve Your Case</em></h1>
+      <p>Connect with verified advocates across Uttar Pradesh and beyond. Schedule consultations, track cases, and manage court dates — all in one place.</p>
+      <div class="hero-btns">
+        <button class="btn-hero-p" onclick="quickLogin('client')">I Need a Lawyer</button>
+        <button class="btn-hero-o" onclick="quickLogin('lawyer')">I'm a Lawyer</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="feature-card"><div class="fc-icon">🔍</div><div><div class="fc-title">Smart Lawyer Search</div><div class="fc-desc">Search by name, specialization, or describe your legal problem — our platform suggests matching advocates.</div></div></div>
+      <div class="feature-card"><div class="fc-icon">📅</div><div><div class="fc-title">Meeting Scheduling</div><div class="fc-desc">Book consultations directly with lawyers. Confirm dates and get notified instantly.</div></div></div>
+      <div class="feature-card"><div class="fc-icon">📁</div><div><div class="fc-title">Case Management</div><div class="fc-desc">Lawyers register and track all case details including CNR, FIR numbers, and hearing dates.</div></div></div>
+      <div class="feature-card"><div class="fc-icon">⚖</div><div><div class="fc-title">Court Date Tracker</div><div class="fc-desc">Both lawyers and clients see upcoming hearing dates and scheduled meetings in one dashboard.</div></div></div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hs-card"><div class="hs-num">2,400+</div><div class="hs-label">Verified Lawyers</div></div>
+    <div class="hs-card"><div class="hs-num">18,000+</div><div class="hs-label">Cases Handled</div></div>
+    <div class="hs-card"><div class="hs-num">99%</div><div class="hs-label">Client Satisfaction</div></div>
+  </div>
+</div>
+
+<!-- ===== REGISTER ===== -->
+<div id="register-page" class="page">
+  <div class="auth-page">
+    <div class="auth-box">
+      <div class="auth-logo-sm">⚖ JusticeConnect</div>
+      <h2>Create Your Account</h2>
+      <div class="role-toggle">
+        <button id="rc-btn" class="rtab active" onclick="setRegRole('client')">👤 Client</button>
+        <button id="rl-btn" class="rtab" onclick="setRegRole('lawyer')">⚖ Lawyer</button>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Full Name</label><input id="rg-name" type="text" placeholder="Your full name"></div>
+        <div class="fg"><label>Email</label><input id="rg-email" type="email" placeholder="email@example.com"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Phone</label><input id="rg-phone" type="tel" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="fg"><label>Password</label><input id="rg-pwd" type="password" placeholder="••••••••"></div>
+      </div>
+      <div id="lw-fields" style="display:none">
+        <div class="frow">
+          <div class="fg"><label>Bar Council No.</label><input id="rg-bar" placeholder="BCI/UP/XXXX/XXXX"></div>
+          <div class="fg"><label>Specialization</label>
+            <select id="rg-spec"><option value="">Select</option><option>Criminal Law</option><option>Civil Law</option><option>Family Law</option><option>Property Law</option><option>Labour Law</option><option>Consumer Law</option></select>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Experience (Yrs)</label><input id="rg-exp" type="number" placeholder="5"></div>
+          <div class="fg"><label>Court</label>
+            <select id="rg-court"><option>District Court</option><option>High Court</option><option>Supreme Court</option><option>Family Court</option><option>Consumer Court</option></select>
+          </div>
+        </div>
+        <div class="fg"><label>Bio</label><textarea id="rg-bio" rows="2" placeholder="Brief description..."></textarea></div>
+        <div class="frow">
+          <div class="fg"><label>Fee (₹)</label><input id="rg-fee" type="number" placeholder="1000"></div>
+          <div class="fg"><label>City</label><input id="rg-city" placeholder="Mathura"></div>
+        </div>
+      </div>
+      <div id="cl-fields">
+        <div class="frow">
+          <div class="fg"><label>City</label><input id="rg-cl-city" placeholder="Mathura"></div>
+          <div class="fg"><label>State</label><select id="rg-state"><option>Uttar Pradesh</option><option>Delhi</option><option>Rajasthan</option></select></div>
+        </div>
+      </div>
+      <button class="btn-submit" onclick="registerUser()">Create Account</button>
+      <p class="switch-link">Already registered? <a onclick="showPage('login-page')">Login here</a></p>
+      <p class="switch-link" style="margin-top:8px"><a onclick="showPage('landing')">← Back to Home</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-page" class="page">
+  <div class="auth-page">
+    <div class="auth-box" style="max-width:460px">
+      <div class="auth-logo-sm">⚖ JusticeConnect</div>
+      <h2>Welcome Back</h2>
+      <div class="role-toggle">
+        <button id="lc-btn" class="rtab active" onclick="setLoginRole('client')">👤 Client</button>
+        <button id="ll-btn" class="rtab" onclick="setLoginRole('lawyer')">⚖ Lawyer</button>
+      </div>
+      <div class="fg"><label>Email</label><input id="lg-email" type="email" placeholder="email@example.com"></div>
+      <div class="fg"><label>Password</label><input id="lg-pwd" type="password" placeholder="••••••••"></div>
+      <button class="btn-submit" onclick="loginUser()">Login</button>
+      <p class="switch-link">New user? <a onclick="showPage('register-page')">Create Account</a></p>
+      <div class="demo-row">
+        <button class="demo-btn" onclick="quickLogin('client')">👤 Client Demo</button>
+        <button class="demo-btn" onclick="quickLogin('lawyer')">⚖ Lawyer Demo</button>
+      </div>
+      <p class="switch-link" style="margin-top:8px"><a onclick="showPage('landing')">← Back to Home</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CLIENT DASHBOARD ===== -->
+<div id="client-dash" class="page">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-logo" onclick="showPage('landing')"><span>⚖</span> JusticeConnect</div>
+    <div class="nav-center">
+      <button class="nav-tab active" onclick="switchClientTab('search',this)">🔍 Find Lawyer</button>
+      <button class="nav-tab" onclick="switchClientTab('mycases',this)">📁 My Cases</button>
+      <button class="nav-tab" onclick="switchClientTab('dates',this)">📅 Dates</button>
+      <button class="nav-tab" onclick="switchClientTab('cprofile',this)">👤 Profile</button>
+    </div>
+    <div class="nav-right">
+      <div class="nav-user"><div class="nav-avatar" id="c-av">R</div><span id="c-uname">—</span></div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <!-- FIND LAWYER -->
+    <div id="ctab-search" class="ctab active">
+      <div class="page-title">Find a Lawyer</div>
+      <div class="page-subtitle">Search by name, specialization or describe your legal problem</div>
+      <div class="search-panel">
+        <div class="search-row1">
+          <select class="location-sel"><option>Uttar Pradesh</option><option>Delhi</option><option>Rajasthan</option></select>
+          <select class="location-sel" id="dist-sel"><option>Mathura</option><option>Agra</option><option>Lucknow</option><option>Varanasi</option></select>
+          <div class="search-input-wrap">
+            <input type="text" id="s-query" placeholder="Search by name or describe your problem...">
+          </div>
+          <button class="search-btn" onclick="doSearch()">Search</button>
+        </div>
+        <div class="chips">
+          <span class="chip active" onclick="doFilter('all',this)">All</span>
+          <span class="chip" onclick="doFilter('Criminal Law',this)">Criminal</span>
+          <span class="chip" onclick="doFilter('Civil Law',this)">Civil</span>
+          <span class="chip" onclick="doFilter('Family Law',this)">Family</span>
+          <span class="chip" onclick="doFilter('Property Law',this)">Property</span>
+          <span class="chip" onclick="doFilter('Labour Law',this)">Labour</span>
+          <span class="chip" onclick="doFilter('Consumer Law',this)">Consumer</span>
+        </div>
+      </div>
+      <div id="lawyer-grid" class="lawyer-grid"></div>
+    </div>
+
+    <!-- MY CASES -->
+    <div id="ctab-mycases" class="ctab">
+      <div class="page-title">My Cases</div>
+      <div class="page-subtitle">All cases registered by your lawyer</div>
+      <div id="cl-cases" class="cases-grid"></div>
+    </div>
+
+    <!-- DATES -->
+    <div id="ctab-dates" class="ctab">
+      <div class="page-title">Upcoming Dates</div>
+      <div class="page-subtitle">Court hearings and confirmed meetings</div>
+      <div id="cl-dates" class="dates-grid"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="ctab-cprofile" class="ctab">
+      <div class="page-title">My Profile</div>
+      <div class="page-subtitle">Your account information</div>
+      <div class="profile-layout">
+        <div class="profile-card">
+          <div class="profile-av-big">👤</div>
+          <div class="profile-name" id="cp-name">—</div>
+          <div class="profile-role">Client Account</div>
+        </div>
+        <div class="profile-details" id="cp-details"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LAWYER DASHBOARD ===== -->
+<div id="lawyer-dash" class="page">
+  <nav class="navbar">
+    <div class="nav-logo" onclick="showPage('landing')"><span>⚖</span> JusticeConnect</div>
+    <div class="nav-center">
+      <button class="nav-tab active" onclick="switchLawyerTab('overview',this)">🏠 Overview</button>
+      <button class="nav-tab" onclick="switchLawyerTab('meetings',this)">📆 Meetings</button>
+      <button class="nav-tab" onclick="switchLawyerTab('cases',this)">📁 Cases</button>
+      <button class="nav-tab" onclick="switchLawyerTab('lprofile',this)">👤 Profile</button>
+    </div>
+    <div class="nav-right">
+      <div class="nav-user"><div class="nav-avatar" id="l-av">L</div><span id="l-uname">—</span></div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <!-- OVERVIEW -->
+    <div id="ltab-overview" class="ctab active">
+      <div class="page-title" id="lw-welcome">Good day, Advocate</div>
+      <div class="page-subtitle">Here's your practice overview</div>
+      <div class="lw-stats">
+        <div class="lw-stat"><div class="lw-stat-icon icon-teal">📁</div><div><div class="lw-stat-val" id="lw-c">0</div><div class="lw-stat-label">Total Cases</div></div></div>
+        <div class="lw-stat"><div class="lw-stat-icon icon-navy">📅</div><div><div class="lw-stat-val" id="lw-d">0</div><div class="lw-stat-label">Upcoming Hearings</div></div></div>
+        <div class="lw-stat"><div class="lw-stat-icon icon-gold">📩</div><div><div class="lw-stat-val" id="lw-p">0</div><div class="lw-stat-label">Pending Meetings</div></div></div>
+        <div class="lw-stat"><div class="lw-stat-icon icon-green">✓</div><div><div class="lw-stat-val" id="lw-cf">0</div><div class="lw-stat-label">Confirmed Meetings</div></div></div>
+      </div>
+      <div class="sec-header"><h3>Pending Meeting Requests</h3></div>
+      <div id="lw-pending-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;"></div>
+    </div>
+
+    <!-- MEETINGS -->
+    <div id="ltab-meetings" class="ctab">
+      <div class="page-title">All Meetings</div>
+      <div class="page-subtitle">Requested and confirmed consultations</div>
+      <div id="lw-all-meetings" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;"></div>
+    </div>
+
+    <!-- CASES -->
+    <div id="ltab-cases" class="ctab">
+      <div class="sec-header">
+        <div><div class="page-title" style="margin-bottom:4px">Registered Cases</div><div class="page-subtitle" style="margin-bottom:0">All your client cases</div></div>
+        <button class="btn-add" onclick="openModal('case-modal')">+ Register New Case</button>
+      </div>
+      <div id="lw-cases-list" class="cases-grid"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="ltab-lprofile" class="ctab">
+      <div class="page-title">My Profile</div>
+      <div class="page-subtitle">Your advocate profile</div>
+      <div class="profile-layout">
+        <div class="profile-card">
+          <div class="profile-av-big" style="background:linear-gradient(135deg,var(--navy),var(--navy2))">⚖</div>
+          <div class="profile-name" id="lp-name">—</div>
+          <div class="profile-role" id="lp-spec">Advocate</div>
+          <div style="font-size:0.85rem;color:var(--gold);margin-top:6px;" id="lp-rating">★ 5.0</div>
+        </div>
+        <div class="profile-details" id="lp-details"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LAWYER PROFILE MODAL -->
+<div id="lw-modal" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Lawyer Profile</h3><button class="m-close" onclick="closeModal('lw-modal')">✕</button></div>
+    <div id="lw-modal-body"></div>
+  </div>
+</div>
+
+<!-- BOOK MEETING MODAL -->
+<div id="meet-modal" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Schedule Meeting</h3><button class="m-close" onclick="closeModal('meet-modal')">✕</button></div>
+    <div id="meet-lawyer-preview"></div>
+    <div class="frow">
+      <div class="fg"><label>Preferred Date</label><input type="date" id="mt-date"></div>
+      <div class="fg"><label>Preferred Time</label><input type="time" id="mt-time"></div>
+    </div>
+    <div class="fg"><label>Describe Your Problem</label><textarea id="mt-problem" rows="4" placeholder="Briefly describe your legal issue..."></textarea></div>
+    <button class="btn-submit" onclick="scheduleMeeting()">Send Meeting Request</button>
+  </div>
+</div>
+
+<!-- REGISTER CASE MODAL -->
+<div id="case-modal" class="modal-backdrop">
+  <div class="modal-box wide">
+    <div class="modal-head"><h3>Register New Case</h3><button class="m-close" onclick="closeModal('case-modal')">✕</button></div>
+    <div class="frow">
+      <div class="fg"><label>Client Name</label><input id="cs-cname" placeholder="Full name"></div>
+      <div class="fg"><label>CNR Number</label><input id="cs-cnr" placeholder="UPXX0XXXXXXXXX"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Case Type</label><select id="cs-type"><option>Criminal</option><option>Civil</option><option>Family</option><option>Property</option><option>Consumer</option><option>Labour</option></select></div>
+      <div class="fg"><label>Filing Number</label><input id="cs-filing" placeholder="CR/XX/XXXX"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>FIR Number</label><input id="cs-fir" placeholder="FIR/XXX/XXXX"></div>
+      <div class="fg"><label>Court Name</label><input id="cs-court" placeholder="District Court, Mathura"></div>
+    </div>
+    <div class="fg"><label>Case Summary</label><textarea id="cs-summary" rows="3" placeholder="Brief description of the case..."></textarea></div>
+    <div class="frow">
+      <div class="fg"><label>Filing Date</label><input type="date" id="cs-fdate"></div>
+      <div class="fg"><label>Next Hearing Date</label><input type="date" id="cs-ndate"></div>
+    </div>
+    <div class="fg"><label>Client Phone</label><input id="cs-phone" type="tel" placeholder="+91 XXXXX XXXXX"></div>
+    <button class="btn-submit" onclick="registerCase()">Register Case</button>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ===== DATA =====
+const LAWYERS = [
+  { id:'L001', role:'lawyer', name:'Adv. Ramesh Kumar Sharma', email:'ramesh@demo.com', password:'demo123', phone:'+91 94150 12345', bar:'BCI/UP/2010/1234', spec:'Criminal Law', exp:'14', court:'High Court', fee:'1500', city:'Mathura', state:'Uttar Pradesh', bio:'Senior criminal lawyer with 14+ years of experience. Specialist in bail matters, trial advocacy, cheque bounce (NI Act), and appeals in High Court.', rating:'4.8' },
+  { id:'L002', role:'lawyer', name:'Adv. Priya Agarwal', email:'priya@demo.com', password:'demo123', phone:'+91 98100 56789', bar:'BCI/UP/2015/5678', spec:'Family Law', exp:'9', court:'Family Court', fee:'1000', city:'Mathura', state:'Uttar Pradesh', bio:'Experienced in divorce, child custody, maintenance, and matrimonial disputes. Empathetic and result-oriented approach.', rating:'4.9' },
+  { id:'L003', role:'lawyer', name:'Adv. Sunil Verma', email:'sunil@demo.com', password:'demo123', phone:'+91 90151 11223', bar:'BCI/UP/2008/9012', spec:'Property Law', exp:'16', court:'District Court', fee:'2000', city:'Mathura', state:'Uttar Pradesh', bio:'Property disputes, land acquisition, registry fraud, and real estate litigation. 16 years of dedicated practice in Mathura district courts.', rating:'4.7' },
+  { id:'L004', role:'lawyer', name:'Adv. Meena Gupta', email:'meena@demo.com', password:'demo123', phone:'+91 99990 44556', bar:'BCI/UP/2012/3456', spec:'Civil Law', exp:'12', court:'District Court', fee:'1200', city:'Agra', state:'Uttar Pradesh', bio:'Civil suits, injunctions, recovery matters, and contractual disputes. Former government counsel.', rating:'4.6' },
+  { id:'L005', role:'lawyer', name:'Adv. Deepak Tiwari', email:'deepak@demo.com', password:'demo123', phone:'+91 98780 77889', bar:'BCI/UP/2018/7890', spec:'Consumer Law', exp:'6', court:'Consumer Court', fee:'800', city:'Mathura', state:'Uttar Pradesh', bio:'Consumer rights advocate. Cases against banks, e-commerce, builders, and service providers before consumer forums.', rating:'4.5' },
+  { id:'L006', role:'lawyer', name:'Adv. Anjali Singh', email:'anjali@demo.com', password:'demo123', phone:'+91 97110 33445', bar:'BCI/UP/2016/2345', spec:'Labour Law', exp:'8', court:'High Court', fee:'1100', city:'Mathura', state:'Uttar Pradesh', bio:'Labour disputes, wrongful termination, ESI/PF matters, and industrial tribunal cases.', rating:'4.7' },
+];
+const CLIENTS = [{ id:'C001', role:'client', name:'Rajesh Yadav', email:'client@demo.com', password:'demo123', phone:'+91 99010 22334', city:'Mathura', state:'Uttar Pradesh' }];
+let users = [...LAWYERS, ...CLIENTS];
+let meetings = [
+  { id:'M001', clientId:'C001', lawyerId:'L001', clientName:'Rajesh Yadav', lawyerName:'Adv. Ramesh Kumar Sharma', date:'2025-09-15', time:'11:00', problem:'Cheque bounce case – ₹2,50,000 dispute.', status:'pending' },
+  { id:'M002', clientId:'C001', lawyerId:'L002', clientName:'Rajesh Yadav', lawyerName:'Adv. Priya Agarwal', date:'2025-09-18', time:'14:00', problem:'Divorce proceedings consultation.', status:'confirmed' },
+];
+let cases = [
+  { id:'CASE001', lawyerId:'L001', clientId:'C001', clientName:'Rajesh Yadav', cnr:'UPMT0100012024', type:'Criminal', filingNo:'CR/12/2024', firNo:'FIR/345/2024', court:'District Court, Mathura', summary:'Section 138 NI Act – Cheque bounce case against accused for ₹2,50,000.', filingDate:'2024-03-10', nextDate:'2025-09-02', clientPhone:'+91 99010 22334' },
+  { id:'CASE002', lawyerId:'L002', clientId:'C001', clientName:'Rajesh Yadav', cnr:'UPMT0200032024', type:'Family', filingNo:'FC/09/2024', firNo:'', court:'Family Court, Mathura', summary:'Divorce petition under Section 13 HMA, 1955.', filingDate:'2024-05-22', nextDate:'2025-08-25', clientPhone:'+91 99010 22334' },
+];
+
+let currentUser = null, currentRole = null, regRole = 'client', loginRole = 'client', selectedLawyer = null, filterSpec = 'all';
+
+// ===== NAVIGATION =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function setRegRole(r) {
+  regRole = r;
+  document.getElementById('rc-btn').classList.toggle('active', r==='client');
+  document.getElementById('rl-btn').classList.toggle('active', r==='lawyer');
+  document.getElementById('lw-fields').style.display = r==='lawyer'?'block':'none';
+  document.getElementById('cl-fields').style.display = r==='client'?'block':'none';
+}
+function setLoginRole(r) {
+  loginRole = r;
+  document.getElementById('lc-btn').classList.toggle('active', r==='client');
+  document.getElementById('ll-btn').classList.toggle('active', r==='lawyer');
+}
+
+// ===== AUTH =====
+function registerUser() {
+  const name = document.getElementById('rg-name').value.trim();
+  const email = document.getElementById('rg-email').value.trim();
+  const phone = document.getElementById('rg-phone').value.trim();
+  const pwd = document.getElementById('rg-pwd').value;
+  if (!name || !email || !phone || !pwd) { toast('Fill all required fields'); return; }
+  if (users.find(u => u.email === email)) { toast('Email already registered!'); return; }
+  const id = regRole==='lawyer' ? 'L'+String(users.filter(u=>u.role==='lawyer').length+1).padStart(3,'0') : 'C'+String(users.filter(u=>u.role==='client').length+1).padStart(3,'0');
+  const u = { id, role:regRole, name, email, phone, password:pwd };
+  if (regRole==='lawyer') {
+    u.bar=document.getElementById('rg-bar').value; u.spec=document.getElementById('rg-spec').value;
+    u.exp=document.getElementById('rg-exp').value; u.court=document.getElementById('rg-court').value;
+    u.bio=document.getElementById('rg-bio').value; u.fee=document.getElementById('rg-fee').value;
+    u.city=document.getElementById('rg-city').value; u.rating='5.0';
+  } else {
+    u.city=document.getElementById('rg-cl-city').value; u.state=document.getElementById('rg-state').value;
+  }
+  users.push(u); currentUser=u; currentRole=regRole;
+  toast('Account created! Welcome 🎉');
+  setTimeout(loadDashboard, 900);
+}
+
+function loginUser() {
+  const email = document.getElementById('lg-email').value.trim();
+  const pwd = document.getElementById('lg-pwd').value;
+  const u = users.find(x => x.email===email && x.password===pwd);
+  if (!u) { toast('Invalid email or password'); return; }
+  currentUser=u; currentRole=u.role;
+  toast(`Welcome back, ${u.name.split(' ')[0]}! 👋`);
+  setTimeout(loadDashboard, 700);
+}
+
+function quickLogin(role) {
+  currentUser = role==='client' ? CLIENTS[0] : LAWYERS[0];
+  currentRole = role;
+  toast(`Demo login as ${currentUser.name.split(' ')[0]} 👋`);
+  setTimeout(loadDashboard, 600);
+}
+
+function logout() { currentUser=null; currentRole=null; showPage('landing'); }
+
+function loadDashboard() {
+  if (currentRole==='client') { renderClientDash(); showPage('client-dash'); }
+  else { renderLawyerDash(); showPage('lawyer-dash'); }
+}
+
+// ===== CLIENT DASH =====
+function renderClientDash() {
+  const u = currentUser;
+  document.getElementById('c-av').textContent = u.name[0];
+  document.getElementById('c-uname').textContent = u.name;
+  renderLawyerGrid(LAWYERS);
+  renderClientCases();
+  renderClientDates();
+  renderClientProfile();
+}
+
+function switchClientTab(tab, btn) {
+  document.querySelectorAll('#client-dash .nav-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('#client-dash .ctab').forEach(c => c.classList.remove('active'));
+  document.getElementById('ctab-'+tab).classList.add('active');
+}
+
+function renderLawyerGrid(list) {
+  const g = document.getElementById('lawyer-grid');
+  if (!list.length) { g.innerHTML=`<div class="empty"><div class="ei">🔍</div><p>No lawyers found. Try a different search.</p></div>`; return; }
+  g.innerHTML = list.map(l => `
+    <div class="lcard" onclick="openLawyerModal('${l.id}')">
+      <div class="lcard-top">
+        <div class="lcard-avatar">⚖</div>
+        <div style="flex:1">
+          <div class="lcard-name">${l.name}</div>
+          <div class="lcard-spec">${l.spec}</div>
+          <div class="lcard-sub">${l.exp} yrs exp · ${l.court} · ${l.city}</div>
+        </div>
+        <div class="lcard-rating">★ ${l.rating}</div>
+      </div>
+      <div class="lcard-footer">
+        <div class="lcard-fee">₹${l.fee} <span>/ consultation</span></div>
+        <button class="btn-book" onclick="event.stopPropagation();openMeetModal('${l.id}')">Book Meeting</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function doSearch() {
+  const q = document.getElementById('s-query').value.toLowerCase().trim();
+  let res = filterSpec==='all' ? LAWYERS : LAWYERS.filter(l => l.spec===filterSpec);
+  if (q) res = res.filter(l => l.name.toLowerCase().includes(q) || l.spec.toLowerCase().includes(q) || l.bio.toLowerCase().includes(q) || l.city.toLowerCase().includes(q));
+  renderLawyerGrid(res);
+}
+
+function doFilter(spec, el) {
+  filterSpec = spec;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const q = document.getElementById('s-query').value.toLowerCase().trim();
+  let res = spec==='all' ? LAWYERS : LAWYERS.filter(l => l.spec===spec);
+  if (q) res = res.filter(l => l.name.toLowerCase().includes(q) || l.bio.toLowerCase().includes(q));
+  renderLawyerGrid(res);
+}
+
+function renderClientCases() {
+  const my = cases.filter(c => c.clientId===currentUser.id);
+  const el = document.getElementById('cl-cases');
+  if (!my.length) { el.innerHTML=`<div class="empty"><div class="ei">📁</div><p>No cases registered yet.</p></div>`; return; }
+  el.innerHTML = my.map(c => `
+    <div class="case-card">
+      <div class="case-top"><div class="case-title">${c.court}</div><span class="badge-t t-${c.type.toLowerCase()}">${c.type}</span></div>
+      <div class="case-meta">
+        <strong>CNR:</strong> ${c.cnr}<br>
+        <strong>Lawyer:</strong> ${getLName(c.lawyerId)}<br>
+        <strong>Filing No:</strong> ${c.filingNo}${c.firNo?' &nbsp;|&nbsp; <strong>FIR:</strong> '+c.firNo:''}<br>
+        <strong>Filed:</strong> ${fmtDate(c.filingDate)}<br>
+        <div style="margin-top:8px;color:#374151">${c.summary}</div>
+        <div class="next-badge">📅 Next Hearing: ${fmtDate(c.nextDate)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderClientDates() {
+  const myCases = cases.filter(c => c.clientId===currentUser.id);
+  const myMeets = meetings.filter(m => m.clientId===currentUser.id && m.status==='confirmed');
+  const el = document.getElementById('cl-dates');
+  let html = '';
+  myCases.forEach(c => {
+    const d = new Date(c.nextDate);
+    html += `<div class="date-card">
+      <div class="date-cal"><div class="day">${d.getDate()}</div><div class="mon">${d.toLocaleString('en',{month:'short'})}</div></div>
+      <div class="date-info"><h4>${c.court}</h4><p>${c.filingNo} · ${c.type} Case</p><p style="margin-top:3px;color:var(--teal);font-weight:600">Next Hearing: ${fmtDate(c.nextDate)}</p></div>
+      <div class="date-tag tag-court">Court</div>
+    </div>`;
+  });
+  myMeets.forEach(m => {
+    const d = new Date(m.date);
+    html += `<div class="date-card">
+      <div class="date-cal"><div class="day">${d.getDate()}</div><div class="mon">${d.toLocaleString('en',{month:'short'})}</div></div>
+      <div class="date-info"><h4>Meeting: ${m.lawyerName}</h4><p>${fmtDate(m.date)} at ${m.time}</p></div>
+      <div class="date-tag tag-meeting">Meeting</div>
+    </div>`;
+  });
+  if (!html) html = `<div class="empty"><div class="ei">📅</div><p>No upcoming dates.</p></div>`;
+  el.innerHTML = html;
+}
+
+function renderClientProfile() {
+  const u = currentUser;
+  document.getElementById('cp-name').textContent = u.name;
+  document.getElementById('cp-details').innerHTML = `
+    <div class="detail-row"><span class="detail-label">Full Name</span><span class="detail-val">${u.name}</span></div>
+    <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val">${u.email}</span></div>
+    <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-val">${u.phone}</span></div>
+    <div class="detail-row"><span class="detail-label">City</span><span class="detail-val">${u.city||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">State</span><span class="detail-val">${u.state||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Total Cases</span><span class="detail-val">${cases.filter(c=>c.clientId===u.id).length}</span></div>
+  `;
+}
+
+// ===== LAWYER DASH =====
+function renderLawyerDash() {
+  const u = currentUser;
+  document.getElementById('l-av').textContent = u.name.split(' ').find(w=>w.length>1&&w!='Adv.')?.[0] || 'A';
+  document.getElementById('l-uname').textContent = u.name;
+  document.getElementById('lw-welcome').textContent = `Good day, ${u.name} ⚖`;
+  const lCases = cases.filter(c=>c.lawyerId===u.id);
+  const lMeets = meetings.filter(m=>m.lawyerId===u.id);
+  document.getElementById('lw-c').textContent = lCases.length;
+  document.getElementById('lw-d').textContent = lCases.length;
+  document.getElementById('lw-p').textContent = lMeets.filter(m=>m.status==='pending').length;
+  document.getElementById('lw-cf').textContent = lMeets.filter(m=>m.status==='confirmed').length;
+  renderPending();
+  renderAllMeetings();
+  renderLawyerCases();
+  renderLawyerProfile();
+}
+
+function switchLawyerTab(tab, btn) {
+  document.querySelectorAll('#lawyer-dash .nav-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('#lawyer-dash .ctab').forEach(c => c.classList.remove('active'));
+  document.getElementById('ltab-'+tab).classList.add('active');
+}
+
+function renderPending() {
+  const pend = meetings.filter(m => m.lawyerId===currentUser.id && m.status==='pending');
+  const el = document.getElementById('lw-pending-list');
+  if (!pend.length) { el.innerHTML=`<div class="empty"><div class="ei">📬</div><p>No pending requests.</p></div>`; return; }
+  el.innerHTML = pend.map(m => `
+    <div class="meeting-card">
+      <div><div class="meet-name">${m.clientName}</div><div class="meet-meta">📅 ${fmtDate(m.date)} at ${m.time}<br>📝 ${m.problem}</div></div>
+      <span class="meet-status ms-pending">Pending</span>
+      <div class="meet-actions"><button class="btn-confirm" onclick="updMeet('${m.id}','confirmed')">✓ Confirm</button><button class="btn-decline" onclick="updMeet('${m.id}','declined')">✕ Decline</button></div>
+    </div>
+  `).join('');
+}
+
+function renderAllMeetings() {
+  const all = meetings.filter(m => m.lawyerId===currentUser.id);
+  const el = document.getElementById('lw-all-meetings');
+  if (!all.length) { el.innerHTML=`<div class="empty"><div class="ei">📅</div><p>No meetings yet.</p></div>`; return; }
+  el.innerHTML = all.map(m => `
+    <div class="meeting-card">
+      <div><div class="meet-name">${m.clientName}</div><div class="meet-meta">📅 ${fmtDate(m.date)} at ${m.time}<br>📝 ${m.problem}</div></div>
+      <span class="meet-status ${m.status==='confirmed'?'ms-confirmed':'ms-pending'}">${m.status}</span>
+    </div>
+  `).join('');
+}
+
+function updMeet(id, status) {
+  const m = meetings.find(x=>x.id===id);
+  if (m) { m.status=status; toast(status==='confirmed'?'Meeting confirmed ✓':'Meeting declined'); renderPending(); renderAllMeetings(); renderLawyerDash(); }
+}
+
+function renderLawyerCases() {
+  const lc = cases.filter(c=>c.lawyerId===currentUser.id);
+  const el = document.getElementById('lw-cases-list');
+  if (!lc.length) { el.innerHTML=`<div class="empty"><div class="ei">📁</div><p>No cases yet. Click "Register New Case" to add one.</p></div>`; return; }
+  el.innerHTML = lc.map(c => `
+    <div class="case-card">
+      <div class="case-top"><div class="case-title">${c.clientName}</div><span class="badge-t t-${c.type.toLowerCase()}">${c.type}</span></div>
+      <div class="case-meta">
+        <strong>CNR:</strong> ${c.cnr}<br>
+        <strong>Court:</strong> ${c.court}<br>
+        <strong>Filing No:</strong> ${c.filingNo}${c.firNo?' &nbsp;|&nbsp; <strong>FIR:</strong> '+c.firNo:''}<br>
+        <strong>Filed:</strong> ${fmtDate(c.filingDate)}<br>
+        <div style="margin-top:8px;color:#374151">${c.summary}</div>
+        <div class="next-badge">📅 Next Hearing: ${fmtDate(c.nextDate)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderLawyerProfile() {
+  const u = currentUser;
+  document.getElementById('lp-name').textContent = u.name;
+  document.getElementById('lp-spec').textContent = u.spec || 'Advocate';
+  document.getElementById('lp-rating').textContent = `★ ${u.rating||'5.0'}`;
+  document.getElementById('lp-details').innerHTML = `
+    <div class="detail-row"><span class="detail-label">Bar Council No.</span><span class="detail-val">${u.bar||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Specialization</span><span class="detail-val">${u.spec||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Experience</span><span class="detail-val">${u.exp} Years</span></div>
+    <div class="detail-row"><span class="detail-label">Court</span><span class="detail-val">${u.court||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">City</span><span class="detail-val">${u.city||'—'}</span></div>
+    <div class="detail-row"><span class="detail-label">Phone</span><span class="detail-val">${u.phone}</span></div>
+    <div class="detail-row"><span class="detail-label">Email</span><span class="detail-val">${u.email}</span></div>
+    <div class="detail-row"><span class="detail-label">Consult Fee</span><span class="detail-val">₹${u.fee||'—'}/session</span></div>
+    <div class="detail-row"><span class="detail-label">Rating</span><span class="detail-val" style="color:var(--gold)">★ ${u.rating||'5.0'}</span></div>
+  `;
+}
+
+// ===== MODALS =====
+function openLawyerModal(id) {
+  const l = users.find(u=>u.id===id); if(!l) return;
+  selectedLawyer = l;
+  document.getElementById('lw-modal-body').innerHTML = `
+    <div class="modal-lw-header">
+      <div class="modal-lw-av">⚖</div>
+      <div><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem">${l.name}</div>
+      <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--teal)">${l.spec}</div>
+      <div style="font-size:0.82rem;color:var(--gold);margin-top:2px">★ ${l.rating} · ${l.exp} yrs exp</div></div>
+    </div>
+    <div class="modal-info-grid">
+      <div class="mi-item"><label>Specialization</label><span>${l.spec}</span></div>
+      <div class="mi-item"><label>Experience</label><span>${l.exp} Years</span></div>
+      <div class="mi-item"><label>Court</label><span>${l.court}</span></div>
+      <div class="mi-item"><label>City</label><span>${l.city}</span></div>
+      <div class="mi-item"><label>Consultation Fee</label><span>₹${l.fee}/session</span></div>
+      <div class="mi-item"><label>Bar Council No.</label><span>${l.bar}</span></div>
+    </div>
+    <div class="modal-bio">${l.bio}</div>
+    <button class="btn-submit" onclick="closeModal('lw-modal');openMeetModal('${l.id}')">📅 Schedule Meeting</button>
+  `;
+  openModal('lw-modal');
+}
+
+function openMeetModal(id) {
+  const l = users.find(u=>u.id===id); if(!l) return;
+  selectedLawyer = l;
+  document.getElementById('meet-lawyer-preview').innerHTML = `
+    <div style="display:flex;gap:12px;align-items:center;padding:14px;background:var(--bg);border-radius:12px;margin-bottom:16px">
+      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--navy));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem">⚖</div>
+      <div><strong>${l.name}</strong><br><small style="color:var(--teal);font-weight:700">${l.spec}</small></div>
+    </div>`;
+  const t = new Date(); t.setDate(t.getDate()+1);
+  document.getElementById('mt-date').min = t.toISOString().split('T')[0];
+  openModal('meet-modal');
+}
+
+function scheduleMeeting() {
+  const date=document.getElementById('mt-date').value, time=document.getElementById('mt-time').value, prob=document.getElementById('mt-problem').value.trim();
+  if (!date||!time||!prob) { toast('Please fill all fields'); return; }
+  meetings.push({ id:'M'+String(meetings.length+1).padStart(3,'0'), clientId:currentUser.id, lawyerId:selectedLawyer.id, clientName:currentUser.name, lawyerName:selectedLawyer.name, date, time, problem:prob, status:'pending' });
+  ['mt-date','mt-time','mt-problem'].forEach(id=>document.getElementById(id).value='');
+  closeModal('meet-modal');
+  toast('Meeting request sent! ✓');
+  renderClientDates();
+}
+
+function registerCase() {
+  const fields = { cname:'cs-cname', cnr:'cs-cnr', type:'cs-type', filing:'cs-filing', fir:'cs-fir', court:'cs-court', summary:'cs-summary', fdate:'cs-fdate', ndate:'cs-ndate', phone:'cs-phone' };
+  const v = {};
+  for (const [k,id] of Object.entries(fields)) v[k]=document.getElementById(id).value.trim();
+  if (!v.cname||!v.cnr||!v.court||!v.summary) { toast('Fill all required fields'); return; }
+  cases.push({ id:'CASE'+String(cases.length+1).padStart(3,'0'), lawyerId:currentUser.id, clientId:'MANUAL', clientName:v.cname, cnr:v.cnr, type:v.type, filingNo:v.filing, firNo:v.fir, court:v.court, summary:v.summary, filingDate:v.fdate, nextDate:v.ndate, clientPhone:v.phone });
+  for (const id of Object.values(fields)) document.getElementById(id).value='';
+  closeModal('case-modal');
+  toast('Case registered successfully! ✓');
+  renderLawyerCases(); renderLawyerDash();
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-backdrop').forEach(el => el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); }));
+
+// ===== UTILS =====
+function getLName(id) { const l=users.find(u=>u.id===id); return l?l.name:'Unknown'; }
+function fmtDate(s) { if(!s) return 'N/A'; const d=new Date(s); return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}); }
+function toast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+
+// init
+setRegRole('client'); setLoginRole('client');
+</script>
+</body>
+</html>
